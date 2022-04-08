@@ -11,9 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
-import uz.pdp.appexam_demo.permissionsAndRoles.ApplicationUserPermission;
-import uz.pdp.appexam_demo.permissionsAndRoles.ApplicationUserPermission.*;
-
 
 import static uz.pdp.appexam_demo.permissionsAndRoles.ApplicationUserRole.ADMIN;
 import static uz.pdp.appexam_demo.permissionsAndRoles.ApplicationUserRole.USER;
@@ -23,7 +20,7 @@ import static uz.pdp.appexam_demo.permissionsAndRoles.ApplicationUserRole.USER;
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     private final PasswordEncoder passwordEncoder;
 
-    public static ApplicationUserPermission permission;
+
 
 
     @Autowired
@@ -50,7 +47,11 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         auth
 
                 .inMemoryAuthentication()
-                .withUser("Toby").authorities(ApplicationUserPermission.PRODUCT_ADD, ApplicationUserPermission.PRODUCT_READ, ApplicationUserPermission.PRODUCT_DELETE, ApplicationUserPermission.PRODUCT_READ_BY_ID, ApplicationUserPermission.PRODUCT_UPDATE);
+                .withUser("Toby").password(passwordEncoder.encode("123")).roles(String.valueOf(ADMIN)).authorities("" +
+                        "READ_ALL", "EDIT", "ADD", "READ_BY_ID","EDIT")
+                .and()
+                .withUser("alder").password(passwordEncoder.encode("1234")).roles(String.valueOf(ADMIN)).authorities( "ADD" );
+//
     }
 
     @Override
